@@ -300,7 +300,13 @@ class DepthSeedingNetwork(object):
         checkpoint = torch.load(filename)
 
         if 'model' in checkpoint:
-            self.model.load_state_dict(checkpoint['model'])
+            try:
+                self.model.load_state_dict(checkpoint['model'])
+            except RuntimeError:
+                sd = checkpoint['model']
+                for k in list(sd.keys()):
+                    sd['module.' + k] = sd[k]
+                    del sd[k]
             print("Loaded DSN model")
 
         # Other stuff
@@ -527,7 +533,14 @@ class RegionRefinementNetwork(object):
         checkpoint = torch.load(filename)
 
         if 'model' in checkpoint:
-            self.model.load_state_dict(checkpoint['model'])
+            try:
+                self.model.load_state_dict(checkpoint['model'])
+            except RuntimeError:
+                sd = checkpoint['model']
+                for k in list(sd.keys()):
+                    sd['module.' + k] = sd[k]
+                    del sd[k]
+
             print("Loaded RRN model")
 
         # Other stuff
