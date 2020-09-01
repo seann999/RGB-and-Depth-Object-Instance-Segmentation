@@ -37,7 +37,7 @@ class HoughVotingFunction(Function):
 
         # Compute object centers as y,x locations
         width = directions.shape[3]
-        object_centers = torch.stack([object_center_indices / width,
+        object_centers = torch.stack([object_center_indices // width,
                                       object_center_indices % width], dim=1) # Shape: [N x 2 x max_objects]. y,x location
 
         return initial_masks, num_objects, object_centers
